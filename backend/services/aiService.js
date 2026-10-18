@@ -69,21 +69,55 @@ Research Content:\n\n${content}`;
  * Competitive Analysis: Identifies and compares competitors
  */
 async function analyzeCompetitors(content) {
-  const systemPrompt = 'You are a Market Research Specialist. Provide a critical comparison.';
-  const prompt = `Based on the provided content, identify main competitors. For each, use this format:
-**[Competitor Name]**
-- Advantage: Their main advantage over the company.
-- Gap: A weakness we can exploit.
+  const systemPrompt = 'You are a Market Research Specialist. Provide a critical comparison in a structured JSON format.';
+  const prompt = `Based on the provided content, identify main competitors.
+Return a JSON object with this structure:
+{
+  "competitors": [
+    {
+      "name": "Competitor Name",
+      "strengths": ["strength 1", "strength 2"],
+      "weaknesses": ["weakness 1", "weakness 2"],
+      "gap": "The specific market gap we can exploit"
+    }
+  ]
+}
 
-Constraint: Be concise. No conversational filler.
+Constraint: Return ONLY the JSON object. No conversational filler, no markdown code blocks.
 
 Research Content:\n\n${content}`;
 
-  return callGroq(prompt, systemPrompt);
+  try {
+    const result = await callGroq(prompt, systemPrompt);
+    return JSON.parse(result);
+  } catch (error) {
+    console.error('Error parsing competitor JSON:', error);
+    return {
+      competitors: [
+        {
+          name: 'Unknown',
+          strengths: ['Could not parse structured data'],
+          weaknesses: ['AI response format error'],
+          gap: 'N/A'
+        }
+      ]
+    };
+  }
+}
+
+async function chatWithContext(context, userMessage) {
+  const systemPrompt = `You are a research assistant. Use the provided research context to answer the user's question.
+If the answer isn't directly in the context, use your general knowledge but clearly state: "Based on general knowledge (not in the specific research context)..."
+
+Research Context:
+${context}`;
+
+  return callGroq(userMessage, systemPrompt);
 }
 
 module.exports = {
   summarizeContent,
   analyzeCompany,
-  analyzeCompetitors
+  analyzeCompetitors,
+  chatWithContext
 };

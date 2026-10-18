@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ResearchResult } from '@/types';
+import ResearchChat from './ResearchChat';
+import CompetitiveMatrix from './CompetitiveMatrix';
 
 interface Props {
   result: ResearchResult;
@@ -7,6 +9,16 @@ interface Props {
 }
 
 export function ResearchResultCard({ result, type }: Props) {
+  const [showChat, setShowChat] = useState(false);
+
+  const renderContent = () => {
+    if (type === 'competitors' && typeof result.summary === 'object') {
+      const data = (result.summary as any).competitors;
+      return <CompetitiveMatrix data={data} />;
+    }
+    return <div className="text-slate-600 leading-relaxed whitespace-pre-wrap">{result.summary}</div>;
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <section className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
@@ -16,11 +28,19 @@ export function ResearchResultCard({ result, type }: Props) {
              type === 'company' ? 'Company Analysis' :
              'Competitive Landscape'}
           </h2>
+          <button
+            onClick={() => setShowChat(!showChat)}
+            className="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+          >
+            {showChat ? 'Close Chat' : 'Ask Follow-up Question'}
+          </button>
         </div>
-        <div className="text-slate-600 leading-relaxed whitespace-pre-wrap">
-          {result.summary}
-        </div>
+        {renderContent()}
       </section>
+
+      {showChat && (
+        <ResearchChat context={typeof result.summary === 'object' ? JSON.stringify(result.summary) : result.summary} />
+      )}
 
       <section className="space-y-4">
         <h3 className="text-lg font-medium text-slate-700">Sources</h3>
