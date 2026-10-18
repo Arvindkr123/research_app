@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const researchRoutes = require('./routes/researchRoutes');
 const libraryRoutes = require('./routes/libraryRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -27,6 +28,7 @@ app.get('/health', (req, res) => {
 // Routes
 app.use('/api/research', researchRoutes);
 app.use('/api/research', libraryRoutes); // Library routes share the same base path
+app.use('/api/research', chatRoutes);
 
 // Global Error Handler (Must be last)
 app.use(errorHandler);

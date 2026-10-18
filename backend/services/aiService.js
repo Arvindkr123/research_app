@@ -82,8 +82,19 @@ Research Content:\n\n${content}`;
   return callGroq(prompt, systemPrompt);
 }
 
+async function chatWithContext(context, userMessage) {
+  const systemPrompt = `You are a research assistant. Use the provided research context to answer the user's question.
+If the answer isn't directly in the context, use your general knowledge but clearly state: "Based on general knowledge (not in the specific research context)..."
+
+Research Context:
+${context}`;
+
+  return callGroq(userMessage, systemPrompt);
+}
+
 module.exports = {
   summarizeContent,
   analyzeCompany,
-  analyzeCompetitors
+  analyzeCompetitors,
+  chatWithContext
 };
