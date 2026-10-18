@@ -1,5 +1,7 @@
+'use client';
 import { useState, useEffect, createContext, useContext } from 'react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 interface AuthContextType {
   user: any | null;

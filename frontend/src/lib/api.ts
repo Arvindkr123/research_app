@@ -25,3 +25,5 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
 
   return response;
 };
+
+export const apiRequest = apiFetch;

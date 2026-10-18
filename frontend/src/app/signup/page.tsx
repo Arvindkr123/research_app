@@ -40,7 +40,7 @@ export default function SignupPage() {
               type="text"
               value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 p-2 outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-gray-900 outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -50,7 +50,7 @@ export default function SignupPage() {
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 p-2 outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-gray-900 outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -60,7 +60,7 @@ export default function SignupPage() {
               type="password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="mt-1 w-full rounded-md border border-gray-300 p-2 outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-1 w-full rounded-md border border-gray-300 p-2 text-gray-900 outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>

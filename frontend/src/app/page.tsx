@@ -31,10 +31,25 @@ export default function ResearchPage() {
     try {
       const queryParams = new URLSearchParams(filters).toString();
       const endpoint = queryParams ? `/api/research/saved?${queryParams}` : '/api/research/saved';
-      const data = await apiRequest<ResearchResult[]>(endpoint);
-      setSavedResearch(data);
+      const response = await apiRequest(endpoint);
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (Array.isArray(data)) {
+        setSavedResearch(data);
+      } else if (data && typeof data === 'object' && 'research' in data && Array.isArray((data as any).research)) {
+        setSavedResearch((data as any).research);
+      } else {
+        console.error('Expected array of research results, but received:', data);
+        setSavedResearch([]);
+      }
     } catch (err) {
       console.error('Failed to fetch saved research:', err);
+      setSavedResearch([]);
     }
   };
 

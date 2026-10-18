@@ -1,10 +1,13 @@
 import React from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface NavbarProps {
   onOpenLibrary?: () => void;
 }
 
 export function Navbar({ onOpenLibrary }: NavbarProps) {
+  const { user, logout } = useAuth();
+
   return (
     <nav className="h-16 bg-white border-b border-slate-200 px-4 lg:px-8 flex items-center justify-between sticky top-0 z-50">
       <div className="flex items-center gap-2">
@@ -17,6 +20,19 @@ export function Navbar({ onOpenLibrary }: NavbarProps) {
       </div>
 
       <div className="flex items-center gap-4 lg:gap-6">
+        {user && (
+          <div className="flex items-center gap-4">
+            <span className="hidden sm:block text-sm font-medium text-slate-600">
+              Welcome, <span className="text-slate-900">{user.username}</span>
+            </span>
+            <button
+              onClick={logout}
+              className="px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors border border-red-100"
+            >
+              Logout
+            </button>
+          </div>
+        )}
         {/* Mobile Library Trigger */}
         {onOpenLibrary && (
           <button
