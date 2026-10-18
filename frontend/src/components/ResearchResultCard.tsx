@@ -45,7 +45,7 @@ export function ResearchResultCard({ result, type }: Props) {
       <section className="space-y-4">
         <h3 className="text-lg font-medium text-slate-700">Sources</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {result.sources.map((source, idx) => (
+          {result.sources?.map((source, idx) => (
             <a
               key={idx}
               href={source.url}
