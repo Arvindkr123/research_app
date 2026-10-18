@@ -15,6 +15,8 @@ const researchSchema = new mongoose.Schema({
     },
   ],
   createdAt: { type: Date, default: Date.now },
+  tags: [{ type: String }],
+  folder: { type: String },
 });
 
 module.exports = mongoose.model('Research', researchSchema);

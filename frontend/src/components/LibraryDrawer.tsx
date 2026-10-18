@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ResearchResult } from '@/types';
 import { LibraryCard } from './LibraryCard';
+import LibraryFilter from './LibraryFilter';
 
 interface Props {
   isOpen: boolean;
@@ -8,9 +9,10 @@ interface Props {
   savedResearch: ResearchResult[];
   onDelete: (id: string) => void;
   onView: (item: ResearchResult) => void;
+  onFilterChange?: (filters: { tag?: string; folder?: string }) => void;
 }
 
-export function LibraryDrawer({ isOpen, onClose, savedResearch, onDelete, onView }: Props) {
+export function LibraryDrawer({ isOpen, onClose, savedResearch, onDelete, onView, onFilterChange }: Props) {
   return (
     <>
       {/* Backdrop Overlay */}
@@ -46,6 +48,8 @@ export function LibraryDrawer({ isOpen, onClose, savedResearch, onDelete, onView
 
           {/* Drawer Content */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+            {onFilterChange && <LibraryFilter onFilterChange={onFilterChange} />}
+
             {savedResearch.length === 0 ? (
               <div className="text-center p-8 text-slate-500">
                 No saved research yet.
