@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ResearchResult } from '@/types';
 import ResearchChat from './ResearchChat';
+import CompetitiveMatrix from './CompetitiveMatrix';
 
 interface Props {
   result: ResearchResult;
@@ -9,6 +10,14 @@ interface Props {
 
 export function ResearchResultCard({ result, type }: Props) {
   const [showChat, setShowChat] = useState(false);
+
+  const renderContent = () => {
+    if (type === 'competitors' && typeof result.summary === 'object') {
+      const data = (result.summary as any).competitors;
+      return <CompetitiveMatrix data={data} />;
+    }
+    return <div className="text-slate-600 leading-relaxed whitespace-pre-wrap">{result.summary}</div>;
+  };
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -26,13 +35,11 @@ export function ResearchResultCard({ result, type }: Props) {
             {showChat ? 'Close Chat' : 'Ask Follow-up Question'}
           </button>
         </div>
-        <div className="text-slate-600 leading-relaxed whitespace-pre-wrap">
-          {result.summary}
-        </div>
+        {renderContent()}
       </section>
 
       {showChat && (
-        <ResearchChat context={result.summary} />
+        <ResearchChat context={typeof result.summary === 'object' ? JSON.stringify(result.summary) : result.summary} />
       )}
 
       <section className="space-y-4">
