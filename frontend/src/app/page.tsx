@@ -27,9 +27,11 @@ export default function ResearchPage() {
     fetchSavedResearch();
   }, []);
 
-  const fetchSavedResearch = async () => {
+  const fetchSavedResearch = async (filters = {}) => {
     try {
-      const data = await apiRequest<ResearchResult[]>('/api/research/saved');
+      const queryParams = new URLSearchParams(filters).toString();
+      const endpoint = queryParams ? `/api/research/saved?${queryParams}` : '/api/research/saved';
+      const data = await apiRequest<ResearchResult[]>(endpoint);
       setSavedResearch(data);
     } catch (err) {
       console.error('Failed to fetch saved research:', err);
@@ -227,6 +229,7 @@ export default function ResearchPage() {
         savedResearch={savedResearch}
         onDelete={handleDelete}
         onView={handleViewResearch}
+        onFilterChange={(filters) => fetchSavedResearch(filters)}
       />
     </main>
   );
