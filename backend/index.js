@@ -5,6 +5,8 @@ require('dotenv').config();
 
 const researchRoutes = require('./routes/researchRoutes');
 const libraryRoutes = require('./routes/libraryRoutes');
+const authRoutes = require('./routes/authRoutes');
+const authMiddleware = require('./middleware/authMiddleware');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -25,8 +27,9 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/research', researchRoutes);
-app.use('/api/research', libraryRoutes); // Library routes share the same base path
+app.use('/api/research', authMiddleware, libraryRoutes); // Library routes now require authentication
 
 // Global Error Handler (Must be last)
 app.use(errorHandler);
